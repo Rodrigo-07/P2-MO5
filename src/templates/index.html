@@ -3,24 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://unpkg.com/htmx.org@1.9.11" integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org"></script>
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css"> -->
 </head>
 <body>
 <!-- Botão para receber o endpoint ping com HTMX -->
     <button hx-get="/ping" hx-trigger="click" hx-target="#resposta">Ping</button>
-    
-    <!-- Enviar o request para o endpoint POST echo que exibe a mensagem do request enviadad com HTMX-->
-    <form hx-post="http://127.0.0.1:5000/echo" hx-target="#resposta" hx-trigger="submit">
-        <input type="text" name="mensagem" placeholder="Digite sua mensagem">
-    <button type="submit">Echo</button>
-    </form>
  
 
     <div id="resposta">
     </div>
 
-    <div hx-get="http://127.0.0.1:5000/dash " hx-trigger="every 2s, load" hx-target="#logs">
+    <div hx-get="http://127.0.0.1:5000/dash " hx-trigger="load" hx-target="#logs">
     </div>
 
     <div id="logs"></div>

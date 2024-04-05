@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
 from tinydb import TinyDB, Query
 from datetime import datetime
@@ -11,11 +11,13 @@ CORS(app)
 
 db_log = TinyDB('db_log.json', indent=4)
 
+
 @app.before_request
 def log_request():
-    if request.method == "GET":
+    print(request.endpoint)
+    if request.method == "GET" and request.endpoint == 'ping':
         db_log.insert({'data': datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 'requisicao': request.method, 'endpoint': request.endpoint, 'parametros': request.args})
-    elif request.method == "POST":
+    elif request.method == "POST" and request.endpoint == 'echo':
         db_log.insert({'data': datetime.now().strftime('%Y-%m-%d %H:%M:%S'), 'requisicao': request.method, 'endpoint': request.endpoint, 'dados': request.json})
 
 @app.route('/')
@@ -24,23 +26,29 @@ def hello_world():
 
 @app.route('/ping')
 def ping():
-    return {'resposta': 'pong'}
+    return jsonify({'resposta': 'pong'})
 
 
-# Endpoint para receber dados de um formulário e retornar esses dados em formato JSON.
+# # Endpoint para receber dados de um  e retornar esses dados em formato JSON.
 @app.route('/echo', methods=['POST'])
 def echo():
-    data = request.json
-    return data
+    mensagem = request.json['dados']
 
+    # Return the message as JSON
+    return jsonify({'resposta': mensagem})
+
+# Endpoint para retornar a lista de logs armazenados.
 @app.route('/dash', methods=['GET'])
 def dash():
     logs = db_log.all()
     return render_template('dashboard.html', logs=logs)
 
-# Endpoint Para obter as informações para a construção da página, criar a rota '/info', que deve retornar mídia (HTML) sobre os dados armazenados.
+# Endpoint  retornar mídia sobre os dados armazenados.
 @app.route('/info', methods=['GET'])
-
+def info():
+    logs = db_log.all()
+    mensagem = f'<p>{logs}</p>'
+    return mensagem
 
 
 if __name__ == '__main__':
