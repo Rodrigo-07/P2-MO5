@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/htmx.org@1.9.11" integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0" crossorigin="anonymous"></script>
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css"> -->
+</head>
+<body>
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Requisição</th>
+                    <th>Endpoint</th>
+                    <th>Dados</th>
+                    <th>Parametros</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.data }}</td>
+                    <td>{{ log.requisicao }}</td>
+                    <td>{{ log.endpoint }}</td>
+                    <td>{{ log.dados }}</td>
+                    <td>{{ log.parametros }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</body>
+</html>
